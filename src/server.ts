@@ -17,6 +17,7 @@ mongoose.connect(mongoUrl as string, {})
     // Запуск сервера
     app.listen(PORT, () => {
         console.log(`The server is running on ${PORT}`);
+        console.info(`The server is running on http://localhost:${PORT}/admin \n`);
 
     })
 

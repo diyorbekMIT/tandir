@@ -13,7 +13,7 @@ const memberSchema = new Schema({
         default: MemberStatus.ACTIVE,
     },
 
-    memberNickname: {
+    memberNick: {
         type: String,
         required: true,
         index: {unique: true, sparse: true},

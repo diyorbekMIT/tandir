@@ -4,6 +4,15 @@ import router from "./router";
 import routerAdmin from "./routerAdmin"
 import morgan from "morgan";
 
+import session from "express-session";
+import ConncectMongoDb from "connect-mongodb-session"
+
+const MongoDBStore = ConncectMongoDb(session);
+const store  = new MongoDBStore({
+    uri: String(process.env.MONGO_URL),
+    collection: "sessions"
+})
+
 /* <1-ENTRANCE> */
 // Инициализация приложения Express
 
@@ -20,6 +29,16 @@ app.use(express.json());
 app.use(morgan(':method :url :response-time ms [:status] \n'));
 
 /* <2-SESSIONS> */
+
+app.use(session({
+    secret: String(process.env.SECRET_KEY),
+    resave: true,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 3, // 30 days
+    }
+}))
 
 
 /* <3-VIEWS> */

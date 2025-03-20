@@ -13,6 +13,10 @@ routerAdmin
    .get('/login', restaurantController.getLogin)
    .post('/login', restaurantController.processLogin);
 
+routerAdmin.get('/logout', restaurantController.logout)
+
+routerAdmin.get('/checkauth', restaurantController.checkAuth)
+
 
 
 export default routerAdmin;

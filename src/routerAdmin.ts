@@ -1,3 +1,5 @@
+import memberController from "./controllers/member.controller";
+import productController from "./controllers/product.controller";
 import restaurantController from "./controllers/restaurant.controller";
 
 import express from "express";
@@ -17,6 +19,10 @@ routerAdmin.get('/logout', restaurantController.logout)
 
 routerAdmin.get('/checkauth', restaurantController.checkAuth)
 
+/** PRODUCTS */
+
+
+routerAdmin.get('/product/all', memberController.verifyRestaurant,productController.getAllProducts)
 
 
 export default routerAdmin;

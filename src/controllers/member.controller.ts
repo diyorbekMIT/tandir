@@ -1,7 +1,9 @@
 import MemberService from "../models/Member.Service";
 import { T } from "../libs/types/common";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import Errors, { HttpCode, Message } from "../libs/Errrors";
+import { AdminRequest } from "../libs/types/member";
+import { MemberType } from "../libs/enums/member.enum";
 
 
 
@@ -35,6 +37,21 @@ memberController.signup = async (req: Request, res: Response) => {
       else res.status(HttpCode.INTERNAL_SERVER_ERROR).json(Errors.standard)
   }
 }
+
+memberController.verifyRestaurant = async (req: AdminRequest, res: Response, next: NextFunction) => {
+  if (req.session?.member?.memberType === MemberType.RESTAURANT) {
+      req.member = req.session.member;
+      next();
+  } else {
+      const message = Message.NOT_AUTHONTICATED; // ✅ Fixed spelling
+      res.send(`
+          <script>
+              alert("${message}");
+              window.location.replace("/admin/login");
+          </script>
+      `);
+  }
+};
 
 
 export default memberController;

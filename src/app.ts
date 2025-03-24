@@ -6,6 +6,7 @@ import morgan from "morgan";
 
 import session from "express-session";
 import ConncectMongoDb from "connect-mongodb-session"
+import { T } from "./libs/types/common";
 
 const MongoDBStore = ConncectMongoDb(session);
 const store  = new MongoDBStore({
@@ -39,6 +40,13 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 3, // 30 days
     }
 }))
+
+app.use(function(req, res, next){
+    const sessionInstance = req.session as T;
+    res.locals.member = sessionInstance.member;
+    console.log("session: ",sessionInstance.member);
+    next();
+})
 
 
 /* <3-VIEWS> */

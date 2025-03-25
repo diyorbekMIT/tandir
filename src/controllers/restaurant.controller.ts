@@ -2,7 +2,7 @@ import MemberService from "../models/Member.Service";
 import { T } from "../libs/types/common";
 import express, { Request, Response } from "express";
 import { MemberType } from "../libs/enums/member.enum";
-import { AdminRequest } from "../libs/types/member";
+import { AdminRequest, MemberInput } from "../libs/types/member";
 import Errors, { Message } from "../libs/Errrors";
 
 
@@ -56,23 +56,30 @@ restaurantController.processLogin = async (req: AdminRequest, res: Response) => 
 }
 
 restaurantController.processSignUp = async (req: AdminRequest, res: Response) => {
-    try {
-      const newMember = req.body;
-      newMember.memberType = MemberType.RESTAURANT;
+  try {
+		console.log("processSignup!");
+        const file = req.file;
+        
+		const newMember: MemberInput = req.body;
+        newMember.memberImage = file?.path;
+		  newMember.memberType = MemberType.RESTAURANT;
 
-      const memberService = new MemberService();
-      const result = await memberService.processSignup(newMember);
-      req.session.member = result;
-      req.session.save(function () {
-        res.send(result)
-      });
-      console.log(result);
+		const memberService = new MemberService();
+		const result = await memberService.processSignup(newMember);
+  
+        req.session.member = result;
+        req.session.save(function() {
+            res.redirect("/admin/product/all");
+        });
     } catch (err) {
-        console.log("ERROR on RestaurantProcessSignUp", err);
-        const message =  err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG
-        res.send(`<script>alert("${message}"; window.location.replace('admin/signup'))</script>`)
-    }
-}
+        console.log("Error, processLogin", err);
+        const message = err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+        res.send(
+            `<script> alert("${message}"); window.location.replace('/admin/signup') </script>`
+        );
+	}
+};
+
 
 restaurantController.checkAuth = (req: AdminRequest, res: Response) => {
   try {

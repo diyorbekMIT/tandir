@@ -34,7 +34,16 @@ class ProductService {
         throw new Errors(HttpCode.BAD_REQUEST, Message.UPDATE_FAILED);
     }
    }
+
+   public async getAllProducts(): Promise<Product[]> {
+    
+        const products = await this.productModel.find().exec();
+        if (!products) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+        return products as [];
 }
+}
+
+
 
 
 export default ProductService;

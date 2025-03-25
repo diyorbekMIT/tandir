@@ -16,7 +16,9 @@ const productController: T = {};
 productController.getAllProducts = async (req: AdminRequest, res: Response) => {
     try {
         console.log("getAllProducts");
+        const result = await productService.getAllProducts();
         res.render("products");
+        console.log(result);
       
        
         // TODO: Token
@@ -78,7 +80,7 @@ productController.updateProduct = async (req: AdminRequest, res: Response) => {
        
         console.log(result);
 
-        res.send(result); // Send updated product
+        res.status(HttpCode.OK) // Send updated product
     } catch (err) {
         console.log("Error, updateProduct", err);
         res.status(Errors.standard.code).json(Errors.standard);

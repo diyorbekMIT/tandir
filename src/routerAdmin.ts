@@ -34,4 +34,10 @@ routerAdmin.post('/product/:id',
 routerAdmin.get('/product/all', memberController.verifyRestaurant,productController.getAllProducts)
 
 
+/**USERS */
+
+routerAdmin.get('/users/all', memberController.verifyRestaurant, memberController.getUsers);
+routerAdmin.post('/users/update', memberController.verifyRestaurant, memberController.updateChoosesUser)
+
+
 export default routerAdmin;

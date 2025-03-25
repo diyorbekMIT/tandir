@@ -53,5 +53,28 @@ memberController.verifyRestaurant = async (req: AdminRequest, res: Response, nex
   }
 };
 
+memberController.getUsers = async(req: AdminRequest, res: Response) => {
+  try {
+    const users = await memberService.getUsers();
+    res.render("users", {users: users})
+  } catch (err) {
+    console.log("ERROR on getUsers", err);
+    res.redirect("/admin/login");
+  }
+}
 
-export default memberController;
+
+memberController.updateChoosesUser = async (req: AdminRequest, res: Response) => {
+  try {
+    console.log("updateChoosesUser");
+    const result = await memberService.updateChoosenUser(req.body)
+    res.status(HttpCode.OK).json({data: result});
+    console.log(result)
+  } catch(err) {
+    console.log("ERROR on updateChoosesUser", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard)
+  }
+}
+
+export default memberController

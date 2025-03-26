@@ -44,12 +44,12 @@ restaurantController.processLogin = async (req: AdminRequest, res: Response) => 
       const result = await memberService.processLogin(input);
       req.session.member = result;
       req.session.save(function () {
-        res.send(result)
+        res.redirect("/admin/product/all")
       })
     } catch (err) {
         console.log("ERROR on RestaurantProcessLogin", err);
-        const message =  err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG
-        res.send(`<script>alert("${message}"; window.location.replace('admin/login'))</script>`)
+        const message =  err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+        res.send(`<script>alert("${message}"); window.location.replace('/admin/login')</script>`)
         console.log(err);
 
     }

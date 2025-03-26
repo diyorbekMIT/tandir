@@ -17,7 +17,7 @@ productController.getAllProducts = async (req: AdminRequest, res: Response) => {
     try {
         console.log("getAllProducts");
         const result = await productService.getAllProducts();
-        res.render("products");
+        res.render("products", {products: result});
         console.log(result);
       
        

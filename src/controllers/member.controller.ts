@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from "express";
 import Errors, { HttpCode, Message } from "../libs/Errrors";
 import { AdminRequest } from "../libs/types/member";
 import { MemberType } from "../libs/enums/member.enum";
+import { shapeIntoMongooseObjectId } from "../libs/config";
 
 
 
@@ -67,9 +68,10 @@ memberController.getUsers = async(req: AdminRequest, res: Response) => {
 memberController.updateChoosesUser = async (req: AdminRequest, res: Response) => {
   try {
     console.log("updateChoosesUser");
-    const result = await memberService.updateChoosenUser(req.body)
+    req.body._id = shapeIntoMongooseObjectId(req.body._id)
+    const result = await memberService.updateChoosenUser(req.body);
     res.status(HttpCode.OK).json({data: result});
-    console.log(result)
+    console.log('result', result);
   } catch(err) {
     console.log("ERROR on updateChoosesUser", err);
     if (err instanceof Errors) res.status(err.code).json(err);

@@ -6,7 +6,7 @@ $(
     const status = e.target.value;
 
     axios
-      .post(`/admin/user/edit`, {
+      .post(`/admin/user/update`, {
         _id: id,
         memberStatus: status,
       })

@@ -12,9 +12,12 @@ $(
       })
       .then((result) => {
         console.log(result);
+        alert("Status updated successfully!");
+        $(".member-status").blur();
       })
       .catch((err) => {
         console.log(err);
+        alert("Failed to update status!");
       });
   })
 );
